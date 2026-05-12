@@ -7,6 +7,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>SahayAI — సర్కారు పని సులభం</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -30,7 +33,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{font-size:17px;overscroll-behavior-y:none}
-body{font-family:'Poppins',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;overscroll-behavior-y:none}
+body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;overscroll-behavior-y:none}
 
 /* LANG */
 .en{display:block}.te{display:none}
@@ -973,7 +976,7 @@ const SVCS = [
    warn:{en:"Small & marginal farmers (< 2.5 acres) may be EXEMPT from land revenue — check with your VRO. Always get a receipt. Unpaid land revenue can create issues when selling land or getting bank loans.",te:"చిన్న & సన్నకారు రైతులు (2.5 ఎకరాల కంటే తక్కువ) భూమి శిస్తు నుండి మినహాయింపు పొందవచ్చు — మీ VRO తో తనిఖీ చేయండి. ఎల్లప్పుడూ రశీదు తీసుకోండి. చెల్లించని భూమి శిస్తు భూమి అమ్మకం లేదా బ్యాంకు రుణాలకు సమస్యలు సృష్టించవచ్చు."},
    link:'https://ap.meeseva.gov.in'},
 
-  {id:'watertax',cat:'land',emoji:'💧',color:'--teal',feeBg:'--teal-bg',feeTxt:'--teal',
+  {id:'farmwatertax',cat:'land',emoji:'💧',color:'--teal',feeBg:'--teal-bg',feeTxt:'--teal',
    name:{en:'Water Tax (Neeraja Rajaswa) — Canal Irrigation',te:'నీటి పన్ను (నీరజ రాజస్వం) — కాలువ నీటిపారుదల'},
    fee:'₹100–₹200/acre per crop',time:{en:'Paid each crop season (Kharif/Rabi)',te:'ప్రతి పంట సీజన్‌కు (ఖరీఫ్/రబీ) చెల్లించాలి'},valid:{en:'Per season — Kharif (June–Nov) / Rabi (Nov–Apr)',te:'సీజన్‌కు ఒకసారి — ఖరీఫ్ (జూన్–నవంబర్) / రబీ (నవంబర్–ఏప్రిల్)'},
    office:{en:'VRO at Grama Sachivalayam / MeeSeva / irrigationap.cgg.gov.in',te:'గ్రామ సచివాలయం VRO / మీసేవ / irrigationap.cgg.gov.in'},
@@ -2694,15 +2697,19 @@ arrow.classList.add(‘open’);
 setTimeout(() => body.scrollIntoView({behavior:‘smooth’, block:‘nearest’}), 100);
 }
 }
+// ═══ INIT — wait for DOM ready ═══
+function initApp(){
 const TEMPLE_SVCS = SVCS.filter(s=>s.cat===‘temple’);
 const GOVT_SVCS = SVCS.filter(s=>!s.cat.startsWith(‘central_’) && s.cat!==‘temple’);
-
-// Render both grids
 renderCards(GOVT_SVCS);
 renderTempleCards(TEMPLE_SVCS);
-
-// Render route guide with default city
-setTimeout(()=>renderRouteCards(‘vijayawada’), 100);
+setTimeout(()=>renderRouteCards(‘vijayawada’), 150);
+}
+if(document.readyState===‘loading’){
+document.addEventListener(‘DOMContentLoaded’, initApp);
+} else {
+initApp();
+}
 
 // ═══ TEMPLE GRID RENDERER ═══
 function renderTempleCards(svcs){
